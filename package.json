@@ -19,7 +19,8 @@
     "expo-random": "~13.6.0",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-reanimated": "~3.6.2",
-    "@shopify/flash-list": "1.6.3"
+    "@shopify/flash-list": "1.6.3",
+    "react-native-svg": "14.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

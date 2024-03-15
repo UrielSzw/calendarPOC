@@ -1,10 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { FlashList, ListRenderItemInfo } from "@shopify/flash-list";
 import { getInitialEvents } from "../service/getInitialEvents";
 import { CalendarItemType } from "../types/calendar";
-import { CalendarColumn } from "../components/CalendarColumn.component";
 import { useScrollPosition } from "../Context/CalendarContext.provider";
+import { MonthCalendar } from "../components/MonthCalendar.component";
+import { MenuIcon } from "../assets/Menu.icon";
+import { ArrowDownIcon } from "../assets/ArrowDown.icon";
+import { AddIcon } from "../assets/Add.icon";
+import { CalendarColumn } from "../components/Calendar/CalendarColumn.component";
+import { CalendarTop } from "../components/Calendar/CalendarTop.component";
 
 export const CalendarViewMain = () => {
   const styles = getStyles();
@@ -28,7 +39,8 @@ export const CalendarViewMain = () => {
 
   return (
     <View style={styles.wrapper}>
-      <View style={styles.header}></View>
+      <CalendarTop />
+
       <View style={styles.body}>
         {calendarData?.length > 0 && (
           <FlashList
@@ -52,15 +64,15 @@ const getStyles = () => {
     wrapper: {
       flex: 1,
     },
-    header: {
-      width: "100%",
-      borderBottomWidth: 1,
-      borderColor: "#EFECEC",
-      height: 110,
-    },
     body: {
-      height: height - 110,
-      width: width,
+      flexGrow: 1,
+    },
+    currentTimeIndicator: {
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      width: 2,
+      backgroundColor: "red",
     },
   });
 };
