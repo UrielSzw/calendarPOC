@@ -10,10 +10,6 @@ import { FlashList, ListRenderItemInfo } from "@shopify/flash-list";
 import { getInitialEvents } from "../service/getInitialEvents";
 import { CalendarItemType } from "../types/calendar";
 import { useScrollPosition } from "../Context/CalendarContext.provider";
-import { MonthCalendar } from "../components/MonthCalendar.component";
-import { MenuIcon } from "../assets/Menu.icon";
-import { ArrowDownIcon } from "../assets/ArrowDown.icon";
-import { AddIcon } from "../assets/Add.icon";
 import { CalendarColumn } from "../components/Calendar/CalendarColumn.component";
 import { CalendarTop } from "../components/Calendar/CalendarTop.component";
 

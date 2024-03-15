@@ -42,7 +42,6 @@ export const CalendarColumn: React.FC<Props> = ({ events, date, index }) => {
       const totalMinutes = hour * 60 + minutes;
       const minuteHeight = (ROW_HEIGHT * 4) / 60;
       setCurrentTimePosition(totalMinutes * minuteHeight);
-      console.log(hour);
       setIsToday(formatDateToYYYYMMDD(date) === formatDateToYYYYMMDD(now));
     };
 
@@ -60,6 +59,7 @@ export const CalendarColumn: React.FC<Props> = ({ events, date, index }) => {
         scrollEventThrottle={16}
         ref={scrollViewRef}
         onMomentumScrollEnd={handleScroll}
+        showsVerticalScrollIndicator={false}
       >
         <CalendarBody events={events} date={date} />
 
