@@ -22,7 +22,11 @@ LocaleConfig.locales["es"] = {
 };
 LocaleConfig.defaultLocale = "es";
 
-export const MonthCalendar = () => {
+type Props = {
+  setCurrentMonthString: (month: string) => void;
+};
+
+export const MonthCalendar: React.FC<Props> = ({ setCurrentMonthString }) => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const [selectedValue, setSelectedValue] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
@@ -54,6 +58,7 @@ export const MonthCalendar = () => {
       const month = shouldAdd ? newMonth + 1 : newMonth - 1;
       const newDate = new Date(selectedValue.setMonth(month));
       const newSelected = new Date(newDate.setDate(1));
+      setCurrentMonthString(getMonthName(newSelected));
       return newSelected;
     },
     [selectedValue]

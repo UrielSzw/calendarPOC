@@ -12,15 +12,23 @@ import { ArrowDownIcon } from "../../assets/ArrowDown.icon";
 import { AddIcon } from "../../assets/Add.icon";
 import { useState } from "react";
 import { MonthCalendar } from "../MonthCalendar.component";
+import { getMonthName } from "../../service/utils";
 
 export const CalendarTop = () => {
   const styles = getStyles();
 
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  const [currentMonth, setCurrentMonth] = useState<string>(
+    getMonthName(new Date())
+  );
 
   const rotationValue = useState(new Animated.Value(0))[0];
 
   const toggleCalendar = () => {
+    if (showCalendar) {
+      setCurrentMonth(getMonthName(new Date()));
+    }
+
     setShowCalendar(!showCalendar);
     Animated.timing(rotationValue, {
       toValue: showCalendar ? 0 : 1,
@@ -46,7 +54,7 @@ export const CalendarTop = () => {
             style={styles.monthSelector}
             onPress={toggleCalendar}
           >
-            <Text>Enero</Text>
+            <Text>{currentMonth}</Text>
             <Animated.View
               style={{ transform: [{ rotate: interpolatedRotateAnimation }] }}
             >
@@ -65,7 +73,7 @@ export const CalendarTop = () => {
 
       {showCalendar && (
         <View style={styles.month}>
-          <MonthCalendar />
+          <MonthCalendar setCurrentMonthString={setCurrentMonth} />
         </View>
       )}
     </View>
