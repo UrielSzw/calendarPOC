@@ -21,7 +21,6 @@ export const CalendarColumn: React.FC<Props> = ({ events, date, index }) => {
 
   const scrollViewRef = useRef(null);
   const [currentTimePosition, setCurrentTimePosition] = useState(0);
-  const [isToday, setIsToday] = useState(false);
 
   const handleScroll = (event: any) => {
     const newPosition = event.nativeEvent.contentOffset.y;
@@ -42,7 +41,6 @@ export const CalendarColumn: React.FC<Props> = ({ events, date, index }) => {
       const totalMinutes = hour * 60 + minutes;
       const minuteHeight = (ROW_HEIGHT * 4) / 60;
       setCurrentTimePosition(totalMinutes * minuteHeight);
-      setIsToday(formatDateToYYYYMMDD(date) === formatDateToYYYYMMDD(now));
     };
 
     updateCurrentTime(); // Actualizar posición inicial
@@ -63,7 +61,7 @@ export const CalendarColumn: React.FC<Props> = ({ events, date, index }) => {
       >
         <CalendarBody events={events} date={date} />
 
-        {isToday && (
+        {formatDateToYYYYMMDD(date) === formatDateToYYYYMMDD(new Date()) && (
           <View
             style={[styles.currentTimeIndicator, { top: currentTimePosition }]}
           >

@@ -1,3 +1,5 @@
+import { CalendarEventType } from "../types/calendar";
+
 export const ROW_HEIGHT = 20;
 
 export const HOURS = [
@@ -52,3 +54,46 @@ export const MONTHS = [
 ];
 
 export const ROWS = 9;
+
+export const MOCK_EVENTS: CalendarEventType[] = [
+  {
+    start: "09:00:00",
+    end: "10:30:00",
+    startBlocks: 36,
+    endBlocks: 42,
+    durationBlocks: 6,
+    title: "Pepe",
+    category: "Personal",
+    color: "#6c98e0",
+  },
+  {
+    start: "10:00:00",
+    end: "11:00:00",
+    startBlocks: 40,
+    endBlocks: 44,
+    durationBlocks: 4,
+    title: "Today's Event",
+    category: "Personal",
+    color: "#e0cd6c",
+  },
+  {
+    start: "09:30:00",
+    end: "16:00:00",
+    startBlocks: 38,
+    endBlocks: 64,
+    durationBlocks: 26,
+    title: "Reunión de trabajo",
+    category: "Laboral",
+    color: "#b680e8",
+  },
+  {
+    start: "14:00:00",
+    end: "16:30:00",
+    startBlocks: 56,
+    endBlocks: 66,
+    durationBlocks: 10,
+    title: "Clase de yoga",
+    category: "Bienestar",
+    color: "#80e8b7",
+  },
+];
