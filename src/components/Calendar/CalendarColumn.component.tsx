@@ -56,7 +56,7 @@ export const CalendarColumn: React.FC<Props> = ({ events, date, index }) => {
     const totalMinutes = hour * 60 + minutes;
     const minuteHeight = (ROW_HEIGHT * 4) / 60;
 
-    let currentPosition = totalMinutes * minuteHeight;
+    let currentPosition = totalMinutes * minuteHeight * 0.85;
     const totalHeight = ROW_HEIGHT * 4 * 23;
 
     if (currentPosition > totalHeight / 1.5) {
