@@ -11,8 +11,8 @@ import { MenuIcon } from "../../assets/Menu.icon";
 import { ArrowDownIcon } from "../../assets/ArrowDown.icon";
 import { AddIcon } from "../../assets/Add.icon";
 import { useState } from "react";
-import { MonthCalendar } from "../MonthCalendar.component";
 import { getMonthName } from "../../service/utils";
+import { MonthCalendar } from "./Elements/MonthCalendar.component";
 
 type Props = {
   scrollToTodayIndex: () => void;

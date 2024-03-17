@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Dimensions, View, ScrollView, StyleSheet } from "react-native";
 import { CalendarEventType } from "../../types/calendar";
 import { useScrollPosition } from "../../Context/CalendarContext.provider";
-import { CalendarBody } from "../CalendarBody.component";
-import { CalendarHeader } from "../CalendarHeader.component";
+import { CalendarBody } from "./Elements/CalendarBody.component";
+import { CalendarHeader } from "./Elements/CalendarHeader.component";
 import { formatDateToYYYYMMDD } from "../../service/utils";
 import { ROW_HEIGHT } from "../../Global/global";
 
@@ -47,6 +47,28 @@ export const CalendarColumn: React.FC<Props> = ({ events, date, index }) => {
     const interval = setInterval(updateCurrentTime, 60000); // Actualizar cada minuto
 
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const now = new Date();
+    const hour = now.getHours();
+    const minutes = now.getMinutes();
+    const totalMinutes = hour * 60 + minutes;
+    const minuteHeight = (ROW_HEIGHT * 4) / 60;
+
+    let currentPosition = totalMinutes * minuteHeight;
+    const totalHeight = ROW_HEIGHT * 4 * 23;
+
+    if (currentPosition > totalHeight / 1.5) {
+      currentPosition = totalHeight / 1.5;
+    }
+
+    setTimeout(() => {
+      scrollViewRef.current?.scrollTo({
+        y: currentPosition,
+        animated: false,
+      });
+    }, 50);
   }, []);
 
   return (

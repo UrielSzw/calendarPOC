@@ -221,7 +221,6 @@ export const CalendarViewMain = () => {
         reachedStart.current = true;
         fetchPreviousDates();
       }
-      console.log(viewableItems);
     }
   };
 

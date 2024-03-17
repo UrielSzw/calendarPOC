@@ -8,10 +8,10 @@ import {
   View,
 } from "react-native";
 import { Calendar, CalendarUtils, DateData } from "react-native-calendars";
-import { formatDateToYYYYMMDD, getMonthName } from "../service/utils";
-import { CalendarTodayIcon } from "../assets/CalendarToday.component";
+import { formatDateToYYYYMMDD, getMonthName } from "../../../service/utils";
+import { CalendarTodayIcon } from "../../../assets/CalendarToday.component";
 import { LocaleConfig } from "react-native-calendars";
-import { DAYS, MONTHS } from "../Global/global";
+import { DAYS, MONTHS } from "../../../Global/global";
 
 const INITIAL_DATE = formatDateToYYYYMMDD(new Date());
 

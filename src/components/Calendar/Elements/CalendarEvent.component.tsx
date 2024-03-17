@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { ROWS, ROW_HEIGHT } from "../Global/global";
-import { RowsType } from "../types/calendar";
+import { ROWS, ROW_HEIGHT } from "../../../Global/global";
+import { RowsType } from "../../../types/calendar";
 
 export const CalendarEvent = ({ event }) => {
   const { width } = Dimensions.get("screen");

@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { DAYS } from "../Global/global";
-import { getMonthName } from "../service/utils";
+import { DAYS } from "../../../Global/global";
+import { getMonthName } from "../../../service/utils";
 
 type Props = {
   date: Date;

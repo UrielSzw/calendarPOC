@@ -1,11 +1,11 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { HOURS, ROW_HEIGHT } from "../Global/global";
+import { HOURS, ROW_HEIGHT } from "../../../Global/global";
 import {
   CalendarEventType,
   FormattedCalendarEventType,
-} from "../types/calendar";
+} from "../../../types/calendar";
 import { useEffect, useState } from "react";
-import { formatEvents } from "../service/formatEvents";
+import { formatEvents } from "../../../service/formatEvents";
 import { CalendarEvent } from "./CalendarEvent.component";
 
 type Props = {
