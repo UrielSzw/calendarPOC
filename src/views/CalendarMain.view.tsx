@@ -16,10 +16,21 @@ import { CalendarItemType } from "../types/calendar";
 import { useScrollPosition } from "../Context/CalendarContext.provider";
 import { CalendarColumn } from "../components/Calendar/CalendarColumn.component";
 import { CalendarTop } from "../components/Calendar/CalendarTop.component";
-import { getNextEvents, getPreviousEvents } from "../service/getMoreEvents";
+import {
+  getEventsInBetweenDatesBackwards,
+  getEventsInBetweenDatesForward,
+  getNextEvents,
+  getPreviousEvents,
+} from "../service/getMoreEvents";
 import { delay } from "../service/delay";
 
 const AMOUNT_NEW_DATES = 30;
+const TODAY_INDEX = 15;
+
+type FetchBetweenType = {
+  index: number;
+  fetch: boolean;
+};
 
 export const CalendarViewMain = () => {
   const styles = getStyles();
@@ -28,9 +39,18 @@ export const CalendarViewMain = () => {
 
   const flashListRef = useRef(null);
   const reachedStart = useRef<boolean>(false);
-  const [calendarData, setCalendarData] = useState([]);
-  const [todayIndex, setTodayIndex] = useState(15);
+  const [calendarData, setCalendarData] = useState<CalendarItemType[]>([]);
+  const [today, setToday] = useState<CalendarItemType>({
+    date: null,
+    events: [],
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Estado para controlar las funciones de fetchInBetweenDates
+  const fetchBetween = useRef<FetchBetweenType>({
+    index: 0,
+    fetch: false,
+  });
 
   // Estados para llevar la primera y ultima fecha que traer el back para saber desde cual pedir mas fechas de ser necesario
   const [firstCurrentDate, setFirstCurrentDate] = useState(new Date());
@@ -76,7 +96,94 @@ export const CalendarViewMain = () => {
       index: AMOUNT_NEW_DATES,
       animated: false,
     });
+
     setIsLoading(false);
+  };
+
+  const fetchInBetweenDatesForward = async (
+    initialDate: Date,
+    endDateParam: Date
+  ) => {
+    setIsLoading(true);
+
+    const lastDateToSeacrh = new Date(initialDate);
+    lastDateToSeacrh.setDate(lastDateToSeacrh.getDate() + 1);
+
+    const { inBetweenEvents, indexToScroll, endDate } =
+      getEventsInBetweenDatesForward(lastDateToSeacrh, endDateParam);
+
+    const totalIndex = calendarData.length + indexToScroll;
+
+    await delay(2000);
+
+    fetchBetween.current = {
+      index: totalIndex,
+      fetch: true,
+    };
+
+    setCalendarData((prevData) => {
+      return [...prevData, ...inBetweenEvents];
+    });
+
+    setLastCurrentDate(endDate);
+  };
+
+  const fetchInBetweenDatesBackwards = async (
+    initialDate: Date,
+    endDateParam: Date
+  ) => {
+    setIsLoading(true);
+
+    const { inBetweenEvents, indexToScroll, startDate } =
+      getEventsInBetweenDatesBackwards(initialDate, endDateParam);
+
+    await delay(2000);
+
+    fetchBetween.current = {
+      index: indexToScroll,
+      fetch: true,
+    };
+
+    setFirstCurrentDate(startDate);
+
+    setCalendarData((prevData) => {
+      return [...inBetweenEvents, ...prevData];
+    });
+  };
+
+  const scrollToToday = () => {
+    // flashListRef.current?.scrollToIndex({
+    //   index: todayIndex,
+    //   animated: true,
+    // });
+
+    flashListRef.current?.scrollToItem({
+      item: today,
+      animated: true,
+    });
+  };
+
+  const scrollToSpecificIndex = (index: number) => {
+    flashListRef.current?.scrollToIndex({
+      index,
+      animated: true,
+    });
+  };
+
+  const scrollToIndexByDate = (date: Date) => {
+    const calendarIndex = calendarData.findIndex(
+      (calendar) => calendar.date.toDateString() === date.toDateString()
+    );
+
+    if (calendarIndex > -1) {
+      scrollToSpecificIndex(calendarIndex);
+    } else {
+      if (date > lastCurrentDate) {
+        fetchInBetweenDatesForward(lastCurrentDate, date);
+      } else if (date < firstCurrentDate) {
+        fetchInBetweenDatesBackwards(firstCurrentDate, date);
+      }
+    }
   };
 
   useEffect(() => {
@@ -84,7 +191,22 @@ export const CalendarViewMain = () => {
     setCalendarData(calendar);
     setFirstCurrentDate(firstDate);
     setLastCurrentDate(lastDate);
+    setToday(calendar[TODAY_INDEX]);
   }, []);
+
+  useEffect(() => {
+    if (fetchBetween.current.fetch) {
+      setTimeout(() => {
+        scrollToSpecificIndex(fetchBetween.current.index);
+        setIsLoading(false);
+      }, 1000);
+
+      fetchBetween.current = {
+        index: fetchBetween.current.index,
+        fetch: false,
+      };
+    }
+  }, [calendarData]);
 
   // const getItemLayout = (_data, index) => ({
   //   length: width,
@@ -99,6 +221,7 @@ export const CalendarViewMain = () => {
         reachedStart.current = true;
         fetchPreviousDates();
       }
+      console.log(viewableItems);
     }
   };
 
@@ -114,7 +237,10 @@ export const CalendarViewMain = () => {
 
   return (
     <View style={styles.wrapper}>
-      <CalendarTop />
+      <CalendarTop
+        scrollToTodayIndex={scrollToToday}
+        scrollToIndexByDate={scrollToIndexByDate}
+      />
 
       {isLoading && (
         <View style={styles.loading}>
@@ -131,7 +257,7 @@ export const CalendarViewMain = () => {
             data={calendarData}
             renderItem={renderItem}
             estimatedItemSize={width}
-            initialScrollIndex={todayIndex}
+            initialScrollIndex={TODAY_INDEX}
             onEndReached={() => fetchNextDates()}
             onEndReachedThreshold={5}
             onViewableItemsChanged={onViewableItemsChanged}

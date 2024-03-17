@@ -1,10 +1,11 @@
 import { MOCK_EVENTS } from "../Global/global";
+import { CalendarItemType } from "../types/calendar";
 
 export const getInitialEvents = () => {
   const firstDate = new Date();
   firstDate.setDate(firstDate.getDate() - 15);
 
-  const calendar = [];
+  const calendar: CalendarItemType[] = [];
 
   let lastDate: Date;
 

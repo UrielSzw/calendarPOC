@@ -1,5 +1,5 @@
 import { MOCK_EVENTS } from "../Global/global";
-import { CalendarEventType } from "../types/calendar";
+import { CalendarEventType, CalendarItemType } from "../types/calendar";
 
 export const getNextEvents = (date: Date, count: number) => {
   const nextDatesWithEvents = [];
@@ -53,5 +53,71 @@ export const getPreviousEvents = (date: Date, count: number) => {
   return {
     previousEvents: previousDatesWithEvents,
     firstDate,
+  };
+};
+
+// Función para obtener eventos entre dos fechas hacia adelante
+export const getEventsInBetweenDatesForward = (
+  startDate: Date,
+  endDate: Date
+) => {
+  const datesWithEventsForward = [];
+
+  const endDatePlusTwenty = new Date(endDate);
+  endDatePlusTwenty.setDate(endDatePlusTwenty.getDate() + 20); // Agregar 20 días a la fecha de fin
+
+  // Iterar para obtener las fechas con eventos entre la fecha de inicio y la fecha de fin + 20 días
+  for (
+    let currentDate = new Date(startDate);
+    currentDate <= endDatePlusTwenty;
+    currentDate.setDate(currentDate.getDate() + 1)
+  ) {
+    // Obtener eventos para la fecha actual
+    datesWithEventsForward.push({
+      date: new Date(currentDate),
+      events: MOCK_EVENTS,
+    });
+  }
+
+  // Encontrar el índice de la fecha de fin
+  const indexToScroll = datesWithEventsForward.length - 21;
+
+  return {
+    inBetweenEvents: datesWithEventsForward,
+    indexToScroll,
+    endDate: endDatePlusTwenty,
+  };
+};
+
+// Función para obtener eventos entre dos fechas hacia atrás
+export const getEventsInBetweenDatesBackwards = (
+  startDate: Date,
+  endDate: Date
+) => {
+  const datesWithEventsBackwards = [];
+
+  const endDateMinusTwenty = new Date(endDate);
+  endDateMinusTwenty.setDate(endDateMinusTwenty.getDate() - 20); // Restar 20 días a la fecha de inicio
+
+  // Iterar para obtener las fechas con eventos entre la fecha de inicio - 20 días y la fecha de fin
+  for (
+    let currentDate = new Date(startDate);
+    currentDate >= endDateMinusTwenty;
+    currentDate.setDate(currentDate.getDate() - 1)
+  ) {
+    // Obtener eventos para la fecha actual
+    datesWithEventsBackwards.unshift({
+      date: new Date(currentDate),
+      events: MOCK_EVENTS,
+    });
+  }
+
+  // Encontrar el índice de la fecha de fin
+  const indexToScroll = 19;
+
+  return {
+    inBetweenEvents: datesWithEventsBackwards,
+    indexToScroll,
+    startDate: endDateMinusTwenty,
   };
 };

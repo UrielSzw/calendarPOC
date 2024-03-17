@@ -24,9 +24,17 @@ LocaleConfig.defaultLocale = "es";
 
 type Props = {
   setCurrentMonthString: (month: string) => void;
+  toggleCalendar: () => void;
+  scrollToTodayIndex: () => void;
+  scrollToIndexByDate: (date: Date) => void;
 };
 
-export const MonthCalendar: React.FC<Props> = ({ setCurrentMonthString }) => {
+export const MonthCalendar: React.FC<Props> = ({
+  setCurrentMonthString,
+  toggleCalendar,
+  scrollToTodayIndex,
+  scrollToIndexByDate,
+}) => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const [selectedValue, setSelectedValue] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
@@ -38,7 +46,12 @@ export const MonthCalendar: React.FC<Props> = ({ setCurrentMonthString }) => {
   };
 
   const onDayPress = useCallback((day: DateData) => {
+    const targetDate = new Date(day.dateString);
+    targetDate.setDate(targetDate.getDate() + 1);
+
+    scrollToIndexByDate(targetDate);
     setSelected(day.dateString);
+    toggleCalendar();
   }, []);
 
   const marked = useMemo(() => {
@@ -81,10 +94,15 @@ export const MonthCalendar: React.FC<Props> = ({ setCurrentMonthString }) => {
     [getNewSelectedDate]
   );
 
+  const handleHeaderPress = () => {
+    toggleCalendar();
+    scrollToTodayIndex();
+  };
+
   const CustomHeaderTitle = (
     <TouchableOpacity
       style={styles.customTitleContainer}
-      onPress={() => console.warn("Tapped!")}
+      onPress={handleHeaderPress}
     >
       <CalendarTodayIcon />
       <Text style={styles.customTitle}>{getMonthName(selectedValue)}</Text>

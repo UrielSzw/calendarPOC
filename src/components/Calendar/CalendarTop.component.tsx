@@ -14,7 +14,15 @@ import { useState } from "react";
 import { MonthCalendar } from "../MonthCalendar.component";
 import { getMonthName } from "../../service/utils";
 
-export const CalendarTop = () => {
+type Props = {
+  scrollToTodayIndex: () => void;
+  scrollToIndexByDate: (date: Date) => void;
+};
+
+export const CalendarTop: React.FC<Props> = ({
+  scrollToTodayIndex,
+  scrollToIndexByDate,
+}) => {
   const styles = getStyles();
 
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
@@ -73,7 +81,12 @@ export const CalendarTop = () => {
 
       {showCalendar && (
         <View style={styles.month}>
-          <MonthCalendar setCurrentMonthString={setCurrentMonth} />
+          <MonthCalendar
+            setCurrentMonthString={setCurrentMonth}
+            scrollToTodayIndex={scrollToTodayIndex}
+            toggleCalendar={toggleCalendar}
+            scrollToIndexByDate={scrollToIndexByDate}
+          />
         </View>
       )}
     </View>
