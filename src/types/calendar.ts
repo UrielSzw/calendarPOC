@@ -30,3 +30,8 @@ export type RowsType = {
   8: boolean;
   9: boolean;
 };
+
+export type CalendarCategory = {
+  name: string;
+  color: string;
+};

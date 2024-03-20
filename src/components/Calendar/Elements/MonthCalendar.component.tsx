@@ -66,7 +66,7 @@ export const MonthCalendar: React.FC<Props> = ({
   }, [selected]);
 
   const getNewSelectedDate = useCallback(
-    (date, shouldAdd) => {
+    (date: any, shouldAdd: any) => {
       const newMonth = new Date(date).getMonth();
       const month = shouldAdd ? newMonth + 1 : newMonth - 1;
       const newDate = new Date(selectedValue.setMonth(month));
@@ -77,7 +77,7 @@ export const MonthCalendar: React.FC<Props> = ({
     [selectedValue]
   );
   const onPressArrowLeft = useCallback(
-    (subtract, month) => {
+    (subtract: any, month: any) => {
       const newDate = getNewSelectedDate(month, false);
       setSelectedValue(newDate);
       subtract();
@@ -86,7 +86,7 @@ export const MonthCalendar: React.FC<Props> = ({
   );
 
   const onPressArrowRight = useCallback(
-    (add, month) => {
+    (add: any, month: any) => {
       const newDate = getNewSelectedDate(month, true);
       setSelectedValue(newDate);
       add();

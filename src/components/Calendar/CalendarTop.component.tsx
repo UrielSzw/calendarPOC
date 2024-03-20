@@ -17,11 +17,13 @@ import { MonthCalendar } from "./Elements/MonthCalendar.component";
 type Props = {
   scrollToTodayIndex: () => void;
   scrollToIndexByDate: (date: Date) => void;
+  setIsCreateView: (value: boolean) => void;
 };
 
 export const CalendarTop: React.FC<Props> = ({
   scrollToTodayIndex,
   scrollToIndexByDate,
+  setIsCreateView,
 }) => {
   const styles = getStyles();
 
@@ -72,7 +74,10 @@ export const CalendarTop: React.FC<Props> = ({
         </View>
 
         <View style={styles.right}>
-          <TouchableOpacity style={styles.addEvent}>
+          <TouchableOpacity
+            style={styles.addEvent}
+            onPress={() => setIsCreateView(true)}
+          >
             <Text>Añadir evento</Text>
             <AddIcon />
           </TouchableOpacity>

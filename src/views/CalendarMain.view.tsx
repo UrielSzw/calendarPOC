@@ -23,6 +23,7 @@ import {
   getPreviousEvents,
 } from "../service/getMoreEvents";
 import { delay } from "../service/delay";
+import { CreateNewEvent } from "../components/Calendar/CreateNewEvent/CreateNewEvent.component.";
 
 const AMOUNT_NEW_DATES = 30;
 const TODAY_INDEX = 15;
@@ -45,6 +46,9 @@ export const CalendarViewMain = () => {
     events: [],
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Boolean para manejar vista de creacion de eventos
+  const [isCreateView, setIsCreateView] = useState<boolean>(false);
 
   // Estado para controlar las funciones de fetchInBetweenDates
   const fetchBetween = useRef<FetchBetweenType>({
@@ -234,11 +238,21 @@ export const CalendarViewMain = () => {
   //   []
   // );
 
+  if (isCreateView) {
+    return (
+      <CreateNewEvent
+        todayDate={today.date}
+        setIsCreateView={setIsCreateView}
+      />
+    );
+  }
+
   return (
     <View style={styles.wrapper}>
       <CalendarTop
         scrollToTodayIndex={scrollToToday}
         scrollToIndexByDate={scrollToIndexByDate}
+        setIsCreateView={setIsCreateView}
       />
 
       {isLoading && (

@@ -38,6 +38,16 @@ export const DAYS = [
   "Sábado",
 ];
 
+export const ORDER_DAYS = [
+  "Lunes",
+  "Martes",
+  "Miércoles",
+  "Jueves",
+  "Viernes",
+  "Sábado",
+  "Domingo",
+];
+
 export const MONTHS = [
   "Enero",
   "Febrero",
